@@ -74,12 +74,13 @@ var _redux = __webpack_require__(8);
 
 // STEP 3 define reducers
 var reducer = function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
   var action = arguments[1];
 
   switch (action.type) {
     case "POST_BOOK":
-      return state = action.payload;
+      var books = state.books.concat(action.payload);
+      return { books: books };
   }
   return state;
 };
@@ -94,11 +95,27 @@ store.subscribe(function () {
 // STEP 2  create and dispatch actions
 store.dispatch({
   type: 'POST_BOOK',
-  payload: {
+  payload: [{
     id: 1,
     title: 'this is the book title',
     description: 'this is the book description',
     price: 33.33
+  }, {
+    id: 2,
+    title: 'this is second book title',
+    description: 'this is second book description',
+    price: 50
+  }]
+});
+
+// DISPATCH a second action
+store.dispatch({
+  type: 'POST_BOOK',
+  payload: {
+    id: 3,
+    title: 'this is third book title',
+    description: 'this is third book description',
+    price: 40
   }
 });
 
