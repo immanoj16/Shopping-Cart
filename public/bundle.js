@@ -70,6 +70,8 @@
 "use strict";
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _redux = __webpack_require__(8);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -84,6 +86,38 @@ var reducer = function reducer() {
       // let books = state.books.concat(action.payload);
       // return {books};
       return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
+
+    case "DELETE_BOOK":
+      // Create a copy of the current array of books
+      var currentBookToDelete = [].concat(_toConsumableArray(state.books));
+
+      // Determine at which index in books array is the book to be deleted
+      var indexToDelete = currentBookToDelete.findIndex(function (book) {
+        return book.id === action.payload.id;
+      });
+
+      // use slice to remove the book at the specified index
+      return { books: [].concat(_toConsumableArray(currentBookToDelete.slice(0, indexToDelete)), _toConsumableArray(currentBookToDelete.slice(indexToDelete + 1))) };
+
+    case "UPDATE_BOOK":
+      // Create a copy of the current array of books
+      var currentBookToUpdate = [].concat(_toConsumableArray(state.books));
+
+      // Determine at which index in books array is the book to be updated
+      var indexToUpdate = currentBookToUpdate.findIndex(function (book) {
+        return book.id === action.payload.id;
+      });
+
+      // Create a new book object with the new values and with the same array index of the item we want to replace.
+      // To achieve this we will use ...spread but we could use concat methods too
+      var newBookToUpdate = _extends({}, currentBookToUpdate[indexToUpdate], {
+        title: action.payload.title
+      });
+
+      // This Log has the purpose to show you how newBookToUpdate looks like
+      console.log("what is it newBookToUpdate", newBookToUpdate);
+      // use slice to remove the book at the specified index, replace with the new object and concatenate with the rest of the items in the array
+      return { books: [].concat(_toConsumableArray(currentBookToUpdate.slice(0, indexToUpdate)), [newBookToUpdate], _toConsumableArray(currentBookToUpdate.slice(indexToUpdate + 1))) };
   }
   return state;
 };
@@ -111,15 +145,19 @@ store.dispatch({
   }]
 });
 
-// DISPATCH a second action
+// DELETE a second action
 store.dispatch({
-  type: 'POST_BOOK',
-  payload: [{
-    id: 3,
-    title: 'this is third book title',
-    description: 'this is third book description',
-    price: 40
-  }]
+  type: 'DELETE_BOOK',
+  payload: { id: 1 }
+});
+
+// UPDATE  a book
+store.dispatch({
+  type: "UPDATE_BOOK",
+  payload: {
+    id: 2,
+    title: 'Learn React in 24h'
+  }
 });
 
 /***/ }),
