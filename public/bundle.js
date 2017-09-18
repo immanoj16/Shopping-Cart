@@ -72,6 +72,8 @@
 
 var _redux = __webpack_require__(8);
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 // STEP 3 define reducers
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
@@ -79,8 +81,9 @@ var reducer = function reducer() {
 
   switch (action.type) {
     case "POST_BOOK":
-      var books = state.books.concat(action.payload);
-      return { books: books };
+      // let books = state.books.concat(action.payload);
+      // return {books};
+      return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };
   }
   return state;
 };
@@ -111,12 +114,12 @@ store.dispatch({
 // DISPATCH a second action
 store.dispatch({
   type: 'POST_BOOK',
-  payload: {
+  payload: [{
     id: 3,
     title: 'this is third book title',
     description: 'this is third book description',
     price: 40
-  }
+  }]
 });
 
 /***/ }),

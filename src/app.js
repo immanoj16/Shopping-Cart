@@ -5,8 +5,9 @@ import { createStore } from 'redux';
 const reducer = function (state={books: []}, action) {
   switch (action.type) {
     case "POST_BOOK":
-      let books = state.books.concat(action.payload);
-      return {books};
+      // let books = state.books.concat(action.payload);
+      // return {books};
+      return {books: [...state.books, ...action.payload]};
   }
   return state;
 };
@@ -40,10 +41,10 @@ store.dispatch({
 // DISPATCH a second action
 store.dispatch({
   type: 'POST_BOOK',
-  payload: {
+  payload: [{
     id: 3,
     title: 'this is third book title',
     description: 'this is third book description',
     price: 40
-  }
+  }]
 });
