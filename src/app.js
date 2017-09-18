@@ -44,3 +44,9 @@ store.dispatch({
     title: 'Learn React in 24h'
   }
 });
+
+// ==>> CART ACTIONS <==
+store.dispatch({
+  type: 'ADD_TO_CART',
+  payload: [{id: 2}]
+});

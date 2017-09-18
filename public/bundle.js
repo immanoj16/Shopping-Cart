@@ -119,6 +119,12 @@ store.dispatch({
   }
 });
 
+// ==>> CART ACTIONS <==
+store.dispatch({
+  type: 'ADD_TO_CART',
+  payload: [{ id: 2 }]
+});
+
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
@@ -1373,12 +1379,16 @@ var _redux = __webpack_require__(8);
 
 var _booksReducers = __webpack_require__(25);
 
+var _cartReducers = __webpack_require__(26);
+
 // HERE COMBINE THE REDUCERS
-exports.default = (0, _redux.combineReducers)({
-  books: _booksReducers.booksReducers
-});
+
 
 // HERE IMPORT REDUCERS TO BE COMBINED
+exports.default = (0, _redux.combineReducers)({
+  books: _booksReducers.booksReducers,
+  cart: _cartReducers.cartReducers
+});
 
 /***/ }),
 /* 25 */
@@ -1440,6 +1450,33 @@ function booksReducers() {
       console.log("what is it newBookToUpdate", newBookToUpdate);
       // use slice to remove the book at the specified index, replace with the new object and concatenate with the rest of the items in the array
       return { books: [].concat(_toConsumableArray(currentBookToUpdate.slice(0, indexToUpdate)), [newBookToUpdate], _toConsumableArray(currentBookToUpdate.slice(indexToUpdate + 1))) };
+  }
+  return state;
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// CART REDUCERS
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.cartReducers = cartReducers;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function cartReducers() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { cart: [] };
+  var action = arguments[1];
+
+  switch (action.type) {
+    case "ADD_TO_CART":
+      return { cart: [].concat(_toConsumableArray(state.cart), _toConsumableArray(action.payload)) };
   }
   return state;
 }
