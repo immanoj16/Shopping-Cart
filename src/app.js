@@ -1,4 +1,9 @@
 "use strict"
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
 
@@ -7,15 +12,18 @@ import reducers from './reducers';
 // IMPORT ACTIONS
 import { addToCart } from "./actions/cartActions";
 import { postBooks, deleteBooks, updateBooks } from "./actions/booksActions";
+import BooksList from './components/pages/BooksList';
 
 // STEP 1 create the store
 const middleware = applyMiddleware(logger);
 const store = createStore(reducers, middleware);
 
-/*store.subscribe(function () {
-  console.log('current state is: ', store.getState());
-});*/
-
+ReactDOM.render(
+  <Provider store={store}>
+    <BooksList/>
+  </Provider>,
+  document.getElementById('app')
+);
 
 // STEP 2  create and dispatch actions
 store.dispatch(postBooks([{
@@ -33,13 +41,13 @@ store.dispatch(postBooks([{
 );
 
 // DELETE a second action
-store.dispatch(deleteBooks({id: 1}));
+// store.dispatch(deleteBooks({id: 1}));
 
 // UPDATE  a book
-store.dispatch(updateBooks({
+/*store.dispatch(updateBooks({
   id: 2,
   title: 'Learn React in 24h'
-}));
+}));*/
 
 // ==>> CART ACTIONS <==
-store.dispatch(addToCart([{id: 1}]));
+// store.dispatch(addToCart([{id: 1}]));
