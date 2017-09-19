@@ -10,10 +10,10 @@ class BookItem extends React.Component {
 
   handleCart() {
 
-    const { id, title, description, price } = this.props.booksArr;
+    const { _id, title, description, price } = this.props.booksArr;
 
     const book = [{
-      id,
+      _id,
       title,
       description,
       price

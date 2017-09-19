@@ -32395,12 +32395,12 @@ exports.booksReducers = booksReducers;
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var books = [{
-  id: 1,
+  _id: 1,
   title: 'this is the book title',
   description: 'this is the book description',
   price: 33.33
 }, {
-  id: 2,
+  _id: 2,
   title: 'this is second book title',
   description: 'this is second book description',
   price: 50
@@ -32426,7 +32426,7 @@ function booksReducers() {
 
       // Determine at which index in books array is the book to be deleted
       var indexToDelete = currentBookToDelete.findIndex(function (book) {
-        return book.id === action.payload.id;
+        return book._id === action.payload._id;
       });
 
       // use slice to remove the book at the specified index
@@ -32438,7 +32438,7 @@ function booksReducers() {
 
       // Determine at which index in books array is the book to be updated
       var indexToUpdate = currentBookToUpdate.findIndex(function (book) {
-        return book.id === action.payload.id;
+        return book._id === action.payload._id;
       });
 
       // Create a new book object with the new values and with the same array index of the item we want to replace.
@@ -32568,7 +32568,7 @@ var BooksList = function (_Component) {
       var booksList = this.props.books.map(function (booksArr) {
         return _react2.default.createElement(
           _reactBootstrap.Col,
-          { xs: 12, sm: 6, md: 4, key: booksArr.id },
+          { xs: 12, sm: 6, md: 4, key: booksArr._id },
           _react2.default.createElement(_BookItem2.default, { booksArr: booksArr })
         );
       });
@@ -43945,14 +43945,14 @@ var BookItem = function (_React$Component) {
     key: 'handleCart',
     value: function handleCart() {
       var _props$booksArr = this.props.booksArr,
-          id = _props$booksArr.id,
+          _id = _props$booksArr._id,
           title = _props$booksArr.title,
           description = _props$booksArr.description,
           price = _props$booksArr.price;
 
 
       var book = [{
-        id: id,
+        _id: _id,
         title: title,
         description: description,
         price: price
@@ -44205,7 +44205,7 @@ var Cart = function (_Component) {
       var cartItemsList = this.props.cart.map(function (cartArr) {
         return _react2.default.createElement(
           _reactBootstrap.Panel,
-          { key: cartArr.id },
+          { key: cartArr._id },
           _react2.default.createElement(
             _reactBootstrap.Row,
             null,
@@ -44216,6 +44216,51 @@ var Cart = function (_Component) {
                 'h6',
                 null,
                 cartArr.title
+              ),
+              '\xA0\xA0\xA0\xA0'
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Col,
+              { xs: 12, sm: 2 },
+              _react2.default.createElement(
+                'h6',
+                null,
+                'usd $',
+                cartArr.price
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Col,
+              { xs: 12, sm: 2 },
+              _react2.default.createElement(
+                'h6',
+                null,
+                'qty. ',
+                _react2.default.createElement(_reactBootstrap.Label, { bsStyle: 'success' })
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Col,
+              { xs: 6, sm: 4 },
+              _react2.default.createElement(
+                _reactBootstrap.ButtonGroup,
+                { style: { minWidth: '300px' } },
+                _react2.default.createElement(
+                  _reactBootstrap.Button,
+                  { bsStyle: 'default', bsSize: 'small' },
+                  '-'
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.Button,
+                  { bsStyle: 'default', bsSize: 'small' },
+                  '+'
+                ),
+                '\xA0\xA0\xA0\xA0\xA0',
+                _react2.default.createElement(
+                  _reactBootstrap.Button,
+                  { bsStyle: 'danger', bsSize: 'small' },
+                  'DELETE'
+                )
               )
             )
           )
