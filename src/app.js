@@ -26,6 +26,7 @@ ReactDOM.render(
 );
 
 // STEP 2  create and dispatch actions
+/*
 store.dispatch(postBooks([{
     id: 1,
     title: 'this is the book title',
@@ -39,6 +40,7 @@ store.dispatch(postBooks([{
     price: 50
   }])
 );
+*/
 
 // DELETE a second action
 // store.dispatch(deleteBooks({id: 1}));
