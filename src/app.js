@@ -20,7 +20,7 @@ const store = createStore(reducers, middleware);
 
 ReactDOM.render(
   <Provider store={store}>
-    <BooksList/>
+    <BooksList />
   </Provider>,
   document.getElementById('app')
 );
