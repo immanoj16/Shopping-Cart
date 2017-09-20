@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 
-import { deleteCartItem } from '../../actions/cartActions';
+import { deleteCartItem, updateCart } from '../../actions/cartActions';
 
 class Cart extends Component {
 
@@ -21,6 +21,16 @@ class Cart extends Component {
     let cartAfterDelete = [...currentCartToDelete.slice(0, indexToDelete), ...currentCartToDelete.slice(indexToDelete + 1)];
 
     this.props.deleteCartItem(cartAfterDelete);
+  }
+
+  onIncrement(_id) {
+    this.props.updateCart(_id, 1);
+  }
+
+  onDecrement(_id, quantity) {
+    if(quantity > 1) {
+      this.props.updateCart(_id, -1);
+    }
   }
 
   render () {
@@ -50,12 +60,12 @@ class Cart extends Component {
               <h6>usd ${cartArr.price}</h6>
             </Col>
             <Col xs={12} sm={2}>
-              <h6>qty. <Label bsStyle="success"></Label></h6>
+              <h6>qty. <Label bsStyle="success">{cartArr.quantity}</Label></h6>
             </Col>
             <Col xs={6} sm={4}>
               <ButtonGroup style={{minWidth: '300px'}}>
-                <Button bsStyle="default" bsSize="small">-</Button>
-                <Button bsStyle="default" bsSize="small">+</Button>
+                <Button onClick={this.onDecrement.bind(this, cartArr._id, cartArr.quantity)} bsStyle="default" bsSize="small">-</Button>
+                <Button onClick={this.onIncrement.bind(this, cartArr._id)} bsStyle="default" bsSize="small">+</Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button onClick={this.onDelete.bind(this, cartArr._id)} bsStyle="danger" bsSize="small">DELETE</Button>
               </ButtonGroup>
@@ -80,7 +90,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({deleteCartItem}, dispatch)
+  return bindActionCreators({deleteCartItem, updateCart}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
