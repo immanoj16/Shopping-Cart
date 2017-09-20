@@ -12,7 +12,7 @@ class BookItem extends React.Component {
 
     const { _id, title, description, price } = this.props.booksArr;
 
-    const book = [{
+    const book = [...this.props.cart, {
       _id,
       title,
       description,

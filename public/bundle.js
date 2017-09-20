@@ -32760,6 +32760,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.cartReducers = cartReducers;
+exports.totals = totals;
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -32770,7 +32771,11 @@ function cartReducers() {
 
   switch (action.type) {
     case "ADD_TO_CART":
-      return { cart: [].concat(_toConsumableArray(state.cart), _toConsumableArray(action.payload)) };
+      return _extends({}, state, {
+        cart: action.payload,
+        totalAmount: totals(action.payload).amount,
+        totalQty: totals(action.payload).qty
+      });
 
     case "DELETE_CART_ITEM":
       return _extends({}, state, { cart: action.payload });
@@ -32788,9 +32793,30 @@ function cartReducers() {
 
       var cartUpdate = [].concat(_toConsumableArray(currentBookToUpdate.slice(0, indexToUpdate)), [newBookToUpdate], _toConsumableArray(currentBookToUpdate.slice(indexToUpdate + 1)));
 
-      return _extends({}, state, { cart: cartUpdate });
+      return _extends({}, state, {
+        cart: cartUpdate,
+        totalAmount: totals(cartUpdate).amount,
+        totalQty: totals(cartUpdate).qty
+      });
   }
   return state;
+}
+
+// CALCULATE TOTALS
+function totals(payloadArr) {
+  var totalAmount = payloadArr.map(function (cartArr) {
+    return cartArr.price * cartArr.quantity;
+  }).reduce(function (a, b) {
+    return a + b;
+  }, 0); // start summing from index 0
+
+  var totalQty = payloadArr.map(function (qty) {
+    return qty.quantity;
+  }).reduce(function (a, b) {
+    return a + b;
+  }, 0);
+
+  return { amount: totalAmount.toFixed(2), qty: totalQty };
 }
 
 /***/ }),
@@ -43926,6 +43952,8 @@ var _cartActions = __webpack_require__(488);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -43951,13 +43979,13 @@ var BookItem = function (_React$Component) {
           price = _props$booksArr.price;
 
 
-      var book = [{
+      var book = [].concat(_toConsumableArray(this.props.cart), [{
         _id: _id,
         title: title,
         description: description,
         price: price,
         quantity: 1
-      }];
+      }]);
 
       // CHECK IF CART IS EMPTY
       if (this.props.cart.length > 0) {
@@ -44393,7 +44421,8 @@ var Cart = function (_Component) {
             _react2.default.createElement(
               'h6',
               null,
-              'Total amount:'
+              'Total amount: $',
+              this.props.totalAmount
             ),
             _react2.default.createElement(
               _reactBootstrap.Button,
@@ -44437,7 +44466,8 @@ var Cart = function (_Component) {
               _react2.default.createElement(
                 'h6',
                 null,
-                'total $'
+                'total $',
+                this.props.totalAmount
               )
             ),
             _react2.default.createElement(
@@ -44456,7 +44486,8 @@ var Cart = function (_Component) {
 
 function mapStateToProps(state) {
   return {
-    cart: state.cart.cart
+    cart: state.cart.cart,
+    totalAmount: state.cart.totalAmount
   };
 }
 
