@@ -5,7 +5,7 @@ class Footer extends Component {
     return (
       <footer className="footer text-center">
         <div className="container">
-          <p className="footer-text">Copyright 2017 BooksShop. All rights reserved</p>
+          <p className="footer-text">Copyright&copy; 2017 BooksShop. All rights reserved</p>
         </div>
       </footer>
     )
